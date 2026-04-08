@@ -1,0 +1,53 @@
+name: CI-CD
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print CI message
+        run: echo "CI is enough for this project."
+
+  deploy:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - id: deploy
+        name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v3
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          service: ${{ vars.CLOUD_RUN_SERVICE }}
+          region: ${{ vars.GCP_REGION }}
+          source: .
+          env_vars: |-
+            APP_ENV=production
+            APP_NAME=Todo API
+          secrets: |-
+            DATABASE_URL=todo-database-url:latest
+          flags: --allow-unauthenticated --service-account=${{ vars.CLOUD_RUN_RUNTIME_SA }}
+
+      - name: Print deployed URL
+        run: echo "Cloud Run URL: ${{ steps.deploy.outputs.url }}"

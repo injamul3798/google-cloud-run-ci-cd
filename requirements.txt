@@ -1,0 +1,7 @@
+fastapi==0.115.12
+gunicorn==23.0.0
+PyMySQL==1.1.1
+pydantic-settings==2.8.1
+SQLAlchemy==2.0.38
+uvicorn[standard]==0.34.0
+
