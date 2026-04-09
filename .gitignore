@@ -6,3 +6,5 @@ __pycache__/
 .env
 gha-creds-*.json
 cloud_shell_setup.sh
+cloud_run_setup.sh
+github_actions_setup.sh
