@@ -8,6 +8,14 @@ from service import create_todo, list_todos
 router = APIRouter()
 
 
+@router.get("/sample", status_code=status.HTTP_200_OK)
+def sample_api() -> dict[str, str]:
+    return {
+        "message": "Sample API is working.",
+        "status": "success",
+    }
+
+
 @router.post("/todos", response_model=TodoRead, status_code=status.HTTP_201_CREATED)
 def add_todo(payload: TodoCreate, db: Session = Depends(get_db)) -> TodoRead:
     if not payload.title.strip():
