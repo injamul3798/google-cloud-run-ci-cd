@@ -8,3 +8,5 @@ gha-creds-*.json
 cloud_shell_setup.sh
 cloud_run_setup.sh
 github_actions_setup.sh
+GOOGLE_CLOUD_RUN_CICD_NOTES.txt
+GOOGLE_CLOUD_RUN_CICD_NOTES_v2.txt
