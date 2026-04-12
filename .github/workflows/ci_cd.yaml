@@ -47,7 +47,7 @@ jobs:
             APP_NAME=Todo API
           secrets: |-
             DATABASE_URL=todo-database-url:latest
-          flags: --allow-unauthenticated --service-account=${{ vars.CLOUD_RUN_RUNTIME_SA }}
+          flags: --allow-unauthenticated --service-account=${{ vars.CLOUD_RUN_RUNTIME_SA }} --build-service-account=projects/${{ vars.GCP_PROJECT_ID }}/serviceAccounts/${{ vars.CLOUD_BUILD_SERVICE_ACCOUNT }}
 
       - name: Print deployed URL
         run: |
